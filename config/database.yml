@@ -49,7 +49,8 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
+  adapter: mysql2
+  encoding: utf8mb4
   url: mysql://avnadmin:AVNS_vF2IgTkXF7xs0HlIa1d@mysql-382055c2-manishdahiya0944-3d19.i.aivencloud.com:28716/defaultdb?ssl-mode=REQUIRED
   database: defaultdb
   username: avnadmin
