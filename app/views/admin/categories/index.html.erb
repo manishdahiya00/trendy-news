@@ -1,0 +1,38 @@
+<div id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <h2 class="page-header">Category Index</h2>
+      </div>
+      <div class="col-lg-12">
+        <% if @categories.any? %>
+          <table class="table table-responsive table-bordered">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Color</th>
+                <th>Image</th>
+                <th>Published At</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @categories.each do |category| %>
+                <tr>
+                  <td><%= category.id %></td>
+                  <td><%= category.name %></td>
+                  <td><%= category.color %></td>
+                  <td><img style="width:20px;" src="<%=category.try(:image_url)%>" onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';" /></td>
+                  <td><%= category.created_at %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= will_paginate @categories %>
+        <% else %>
+          <h3>No Category found.</h3>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
