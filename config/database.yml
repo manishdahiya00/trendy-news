@@ -14,7 +14,7 @@ default: &default
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   username: root
-  password: root
+  password: AVNS_vF2IgTkXF7xs0HlIa1d
   socket: /var/run/mysqld/mysqld.sock
 
 development:
@@ -50,6 +50,7 @@ test:
 #
 production:
   <<: *default
-  database: trendy_news_production
-  username: trendy_news
-  password: <%= ENV["TRENDY_NEWS_DATABASE_PASSWORD"] %>
+  url: mysql://avnadmin:AVNS_vF2IgTkXF7xs0HlIa1d@mysql-382055c2-manishdahiya0944-3d19.i.aivencloud.com:28716/defaultdb?ssl-mode=REQUIRED
+  database: defaultdb
+  username: avnadmin
+  password: AVNS_vF2IgTkXF7xs0HlIa1d
