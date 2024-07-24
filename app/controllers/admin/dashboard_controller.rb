@@ -8,6 +8,7 @@ module Admin
       @news = Article.count
       @categories = Category.count
       @saved = Saved.count
+      @app_banners = AppBanner.count
     end
   end
 end
