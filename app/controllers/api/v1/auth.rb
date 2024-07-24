@@ -113,8 +113,9 @@ module API
             return { status: 500, message: INVALID_USER } unless user.present?
             source_ip = request.ip
             forceUpdate = false
+            custom_ads = true
             user.app_opens.create(source_ip: source_ip, version_name: params[:versionName], version_code: params[:versionCode])
-            { status: 200, message: MSG_SUCCESS, forceUpdate: forceUpdate, packageName: "com.mobnews.app" }
+            { status: 200, message: MSG_SUCCESS, forceUpdate: forceUpdate, packageName: "com.mobnews.app", customAds: custom_ads }
           rescue Exception => e
             Rails.logger.info "API Exception-#{Time.now}-appOpen-#{params.inspect}-Error-#{e}"
             { status: 500, message: MSG_ERROR }

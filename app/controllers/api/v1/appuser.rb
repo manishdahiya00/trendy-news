@@ -89,6 +89,30 @@ module API
         end
       end
 
+      resource :customAds do
+        before { api_params }
+        params do
+          use :common_params
+        end
+        post do
+          begin
+            user = valid_user(params[:userId], params[:securityToken])
+            return { status: 500, message: INVALID_USER } unless user.present?
+            custom_ads = []
+            AppBanner.active.all.each do |custom_ad|
+              custom_ads << {
+                imageUrl: custom_ad.image_url,
+                actionUrl: custom_ad.action_url,
+              }
+            end
+            { status: 200, message: MSG_SUCCESS, customAds: custom_ads || [] }
+          rescue Exception => e
+            Rails.logger.info "API Exception-#{Time.now}-allNews-#{params.inspect}-Error-#{e}"
+            { status: 500, message: MSG_ERROR }
+          end
+        end
+      end
+
       resource :categoryDetails do
         before { api_params }
         params do
@@ -165,12 +189,7 @@ module API
                 publishedAt: news.published_at,
               }
             end
-            custom_ad = AppBanner.active.sample
-            customAd = {
-              imageUrl: custom_ad.image_url,
-              actionUrl: custom_ad.action_url,
-            }
-            { status: 200, message: MSG_SUCCESS, newsData: news_data || {}, relatedNews: related_news || [], customAd: customAd || {} }
+            { status: 200, message: MSG_SUCCESS, newsData: news_data || {}, relatedNews: related_news || [] }
           rescue Exception => e
             Rails.logger.info "API Exception-#{Time.now}-newsDetails-#{params.inspect}-Error-#{e}"
             { status: 500, message: MSG_ERROR }
