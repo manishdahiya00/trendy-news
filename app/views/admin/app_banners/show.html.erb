@@ -1,0 +1,42 @@
+<!-- Page Content -->
+<div id="page-wrapper">
+  <div class="container-fluid">
+    <div class="row">
+      <p id="notice" style="color: orange;"><%= notice %></p>
+      <div class="col-lg-12">
+        <h2 class="page-header" style="margin: 10px 0 15px !important;">Showing App Banner</h2>
+      </div>
+
+      <!-- App Banner Details Table -->
+      <table class="table table-responsive table-bordered">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Image Url</th>
+            <th>Action Url</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><%= @appBanner.id %></td>
+             <td><img style="width:20px;" src="<%=@appBanner.try(:image_url)%>" onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';" /></td>
+            <td><%= @appBanner.action_url %></td>
+            <td>
+              <% if @appBanner.status == false %>
+                ❌
+              <% else %>
+                ✔️
+              <% end %>
+            </td>
+            <td><%= @appBanner.created_at %></td>
+            <td><%= @appBanner.updated_at %></td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
