@@ -125,16 +125,16 @@ module API
               content: news.content,
               sourceUrl: news.source_url,
               author: news.author,
+              publishedAt: news.published_at,
             }
             relatedNews = Article.where(category_id: news.category_id).order("RAND()").active
             relatedNews.each do |news|
               related_news << {
+                newsId: news.id,
                 newsTitle: news.title,
-                imageUrl: news.image_url,
-                description: news.description,
-                content: news.content,
-                sourceUrl: news.source_url,
                 author: news.author,
+                imageUrl: news.image_url,
+                publishedAt: news.published_at,
               }
             end
             { status: 200, message: MSG_SUCCESS, newsData: news_data || {}, relatedNews: related_news || [] }
