@@ -29,7 +29,7 @@
                   <td><%= news.author %></td>
                   <td><a href="<%= news.source_url %>" target="_blank">Show News</a></td>
                   <td><img style="width:20px;" src="<%=news.try(:image_url)%>" onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';" /></td>
-                  <td><%= news.published_at %></td>
+                  <td><%= Time.parse(news.published_at).strftime("%d/%m/%Y %I:%M:%p") %></td>
                 </tr>
               <% end %>
             </tbody>
