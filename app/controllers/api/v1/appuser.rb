@@ -24,7 +24,7 @@ module API
             end
             Category.active.each do |category|
               if category.name == "Main News"
-                category_news = Article.all.active
+                category_news = Article.all.active.limit(30)
                 news << {
                   categoryName: category.name,
                   news: category_news.map do |news|
@@ -33,7 +33,7 @@ module API
                       newsTitle: news.title,
                       author: news.author,
                       imageUrl: news.image_url,
-                      publishedAt: news.published_at,
+                      publishedAt: Time.parse(news.published_at).strftime("%d/%m/%y"),
                     }
                   end,
                 }
@@ -47,7 +47,7 @@ module API
                       newsTitle: news.title,
                       author: news.author,
                       imageUrl: news.image_url,
-                      publishedAt: news.published_at,
+                      publishedAt: Time.parse(news.published_at).strftime("%d/%m/%y"),
                     }
                   end,
                 }
@@ -71,19 +71,19 @@ module API
             user = valid_user(params[:userId], params[:securityToken])
             return { status: 500, message: INVALID_USER } unless user.present?
             news_data = []
-            Article.all.limit(30).active.each do |news|
+            Article.active.all.limit(20).each do |news|
               news_data << {
                 newsId: news.id,
                 newsTitle: news.title,
                 author: news.author,
                 imageUrl: news.image_url,
                 category: news.category.name,
-                publishedAt: news.published_at,
+                publishedAt: Time.parse(news.published_at).strftime("%d/%m/%y"),
               }
             end
             { status: 200, message: MSG_SUCCESS, news: news_data || [] }
           rescue Exception => e
-            Rails.logger.info "API Exception-#{Time.now}-allNews-#{params.inspect}-Error-#{e}"
+            Rails.logger.info "API Exception-#{Time.now}-videoNews-#{params.inspect}-Error-#{e}"
             { status: 500, message: MSG_ERROR }
           end
         end
@@ -127,23 +127,23 @@ module API
             category = Category.find(params[:categoryId])
             return { status: 500, message: "NO CATEGORY FOUND" } unless category.present?
             if category.name == "Main News"
-              Article.all.active.each do |article|
+              Article.all.active.limit(30).each do |article|
                 news << {
                   newsId: article.id,
                   newsTitle: article.title,
                   author: article.author,
                   imageUrl: article.image_url,
-                  publishedAt: article.published_at,
+                  publishedAt: Time.parse(article.published_at).strftime("%d/%m/%y"),
                 }
               end
             else
-              category.articles.active.each do |article|
+              category.articles.active.limit(30).each do |article|
                 news << {
                   newsId: article.id,
                   newsTitle: article.title,
                   author: article.author,
                   imageUrl: article.image_url,
-                  publishedAt: article.published_at,
+                  publishedAt: Time.parse(article.published_at).strftime("%d/%m/%y"),
                 }
               end
             end
@@ -177,7 +177,8 @@ module API
               content: news.content,
               sourceUrl: news.source_url,
               author: news.author,
-              publishedAt: news.published_at,
+              publishedAt: Time.parse(news.published_at).strftime("%d/%m/%y"),
+              isSaved: user.saved.find_by(article_id: news.id).present?,
             }
             relatedNews = Article.where(category_id: news.category_id).order("RAND()").active
             relatedNews.each do |news|
@@ -186,7 +187,7 @@ module API
                 newsTitle: news.title,
                 author: news.author,
                 imageUrl: news.image_url,
-                publishedAt: news.published_at,
+                publishedAt: Time.parse(news.published_at).strftime("%d/%m/%y"),
               }
             end
             { status: 200, message: MSG_SUCCESS, newsData: news_data || {}, relatedNews: related_news || [] }
@@ -237,7 +238,7 @@ module API
                   newsTitle: article.title,
                   author: article.author,
                   imageUrl: article.image_url,
-                  publishedAt: article.published_at,
+                  publishedAt: Time.parse(article.published_at).strftime("%d/%m/%y"),
                 }
               end
             end
@@ -289,6 +290,7 @@ module API
                 newsTitle: saved.article.title,
                 author: saved.article.author,
                 imageUrl: saved.article.image_url,
+                publishedAt: Time.parse(saved.article.published_at).strftime("%d/%m/%y"),
               }
             end
             { status: 200, message: MSG_SUCCESS, news: news || [] }

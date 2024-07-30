@@ -23,10 +23,10 @@
               <% @news_data.each do |news| %>
                 <tr>
                   <td><%= news.id %></td>
-                  <td><%= news.title[0,50]+"..." %></td>
+                  <td><%= news.title %></td>
                   <td><%= news.category.name %></td>
-                  <td><%= news.description[0,50]+"..." %></td>
-                  <td><%= news.author[0,25]+"..." %></td>
+                  <td><%= news.description %></td>
+                  <td><%= news.author %></td>
                   <td><a href="<%= news.source_url %>" target="_blank">Show News</a></td>
                   <td><img style="width:20px;" src="<%=news.try(:image_url)%>" onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';" /></td>
                   <td><%= news.published_at %></td>

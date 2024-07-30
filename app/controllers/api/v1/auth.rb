@@ -113,7 +113,7 @@ module API
             return { status: 500, message: INVALID_USER } unless user.present?
             source_ip = request.ip
             forceUpdate = false
-            custom_ads = true
+            custom_ads = [true, false].sample
             user.app_opens.create(source_ip: source_ip, version_name: params[:versionName], version_code: params[:versionCode])
             { status: 200, message: MSG_SUCCESS, forceUpdate: forceUpdate, packageName: "com.mobnews.app", customAds: custom_ads }
           rescue Exception => e
