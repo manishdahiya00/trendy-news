@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :articles
     resources :categories
     resources :app_banners
+    resources :ft_app_users
   end
   mount API::Base => "/"
 end

@@ -9,6 +9,7 @@ module Admin
       @categories = Category.count
       @saved = Saved.count
       @app_banners = AppBanner.count
+      @ft_app_users = FtAppUser.count
     end
   end
 end

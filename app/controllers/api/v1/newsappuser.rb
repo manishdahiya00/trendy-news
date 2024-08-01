@@ -1,6 +1,6 @@
 module API
   module V1
-    class Appuser < Grape::API
+    class Newsappuser < Grape::API
       include API::V1::Defaults
 
       resource :home do

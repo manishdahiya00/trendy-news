@@ -1,0 +1,2 @@
+class FtAppOpen < ApplicationRecord
+end

@@ -1,0 +1,2 @@
+class FtAppUser < ApplicationRecord
+end
