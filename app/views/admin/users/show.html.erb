@@ -32,6 +32,7 @@
         <table class="table table-responsive table-bordered">
           <thead>
             <tr>
+              <th>User From</th>
               <th>Device Id</th>
               <th>Device Type</th>
               <th>Device Name</th>
@@ -39,6 +40,7 @@
           </thead>
           <tbody>
             <tr>
+              <td><%= @user.user_from %></td>
               <td><%= @user.device_id %></td>
               <td><%= @user.device_type %></td>
               <td><%= @user.device_name %></td>
@@ -114,32 +116,32 @@
       <h3>No App Opens Found</h3>
     <% end %>
   </div>
-   <h3>Saved News</h3>
-    <% if @savedNews.any? %>
-      <table class="table table-responsive table-bordered">
-        <thead>
+  <h3>Saved News</h3>
+  <% if @savedNews.any? %>
+    <table class="table table-responsive table-bordered">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Title</th>
+          <th>News Id</th>
+          <th>Created At</th>
+          <th>Updated At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @savedNews.each do |saved| %>
           <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>News Id</th>
-            <th>Created At</th>
-            <th>Updated At</th>
+            <td><%= saved.id %></td>
+            <td><%= saved.article.title[0,70]+"..." %></td>
+            <td><%= saved.article_id %></td>
+            <td><%= saved.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+            <td><%= saved.updated_at.strftime("%d/%m/%y %I:%M %p") %></td>
           </tr>
-        </thead>
-        <tbody>
-          <% @savedNews.each do |saved| %>
-            <tr>
-              <td><%= saved.id %></td>
-              <td><%= saved.article.title[0,70]+"..." %></td>
-              <td><%= saved.article_id %></td>
-              <td><%= saved.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
-              <td><%= saved.updated_at.strftime("%d/%m/%y %I:%M %p") %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= will_paginate @savedNews %>
-    <% else %>
-      <h3>No Saved News Found</h3>
-    <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <%= will_paginate @savedNews %>
+  <% else %>
+    <h3>No Saved News Found</h3>
+  <% end %>
 </div>

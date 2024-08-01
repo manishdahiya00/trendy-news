@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_24_102439) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_01_062628) do
   create_table "app_banners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "image_url"
     t.string "action_url"
@@ -32,8 +32,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_102439) do
 
   create_table "articles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
-    t.string "description"
-    t.string "content"
+    t.text "description"
+    t.text "content"
     t.string "image_url"
     t.string "video_url"
     t.string "author"
@@ -87,6 +87,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_24_102439) do
     t.string "refer_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "user_from"
   end
 
   add_foreign_key "articles", "categories"

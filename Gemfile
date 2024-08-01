@@ -71,3 +71,4 @@ gem "google-id-token", "~> 1.4"
 gem "news-api", "~> 0.2.0"
 
 gem "will_paginate", "~> 4.0"
+gem "whenever", require: false
