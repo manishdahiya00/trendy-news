@@ -114,32 +114,4 @@
       <h3>No App Opens Found</h3>
     <% end %>
   </div>
-  <h3>Saved News</h3>
-  <% if @savedNews.any? %>
-    <table class="table table-responsive table-bordered">
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Title</th>
-          <th>News Id</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @savedNews.each do |saved| %>
-          <tr>
-            <td><%= saved.id %></td>
-            <td><%= saved.article.title[0,70]+"..." %></td>
-            <td><%= saved.article_id %></td>
-            <td><%= saved.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
-            <td><%= saved.updated_at.strftime("%d/%m/%y %I:%M %p") %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-    <%= will_paginate @savedNews %>
-  <% else %>
-    <h3>No Saved News Found</h3>
-  <% end %>
 </div>

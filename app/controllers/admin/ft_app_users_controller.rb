@@ -9,6 +9,6 @@ class Admin::FtAppUsersController < Admin::AdminController
 
   def show
     @user = FtAppUser.find(params[:id])
-    @appOpens = FtAppOpen.where(user_id: @user.id).paginate(page: params[:page], per_page: 15).order(created_at: :desc).limit(10)
+    @appOpens = FtAppOpen.where(ft_app_user_id: @user.id).paginate(page: params[:page], per_page: 15).order(created_at: :desc).limit(10)
   end
 end

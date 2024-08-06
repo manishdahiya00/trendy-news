@@ -59,7 +59,6 @@ module API
           requires :socialName, type: String, allow_blank: false
           requires :socialImgUrl, type: String, allow_blank: false
           requires :advertisingId, type: String, allow_blank: false
-          requires :userFrom, type: String, allow_blank: false
           requires :versionName, type: String, allow_blank: false
           requires :versionCode, type: String, allow_blank: false
           optional :utmSource, type: String, allow_blank: true
@@ -73,10 +72,10 @@ module API
           begin
             valid_user = google_validator(params[:socialToken], params[:socialEmail])
             if valid_user
-              user = FtAppUser.find_by(social_email: params[:socialEmail], social_id: params[:socialId], user_from: params[:userFrom])
+              user = FtAppUser.find_by(social_email: params[:socialEmail], social_id: params[:socialId])
               source_ip = request.ip
               unless user.present?
-                user = FtAppUser.create(device_id: params[:deviceId], device_type: params[:deviceType], device_name: params[:deviceName], social_type: params[:socialType], social_id: params[:socialId], social_email: params[:socialEmail], social_name: params[:socialName], social_img_url: params[:socialImgUrl], advertising_id: params[:advertisingId], version_name: params[:versionName], version_code: params[:versionCode], utm_source: params[:utmSource], utm_term: params[:utmTerm], utm_medium: params[:utmMedium], utm_content: params[:utmContent], utm_campaign: params[:utmCampaign], referrer_url: params[:referalUrl], source_ip: source_ip, security_token: SecureRandom.uuid, refer_code: SecureRandom.hex(6).upcase, user_from: params[:userFrom])
+                user = FtAppUser.create(device_id: params[:deviceId], device_type: params[:deviceType], device_name: params[:deviceName], social_type: params[:socialType], social_id: params[:socialId], social_email: params[:socialEmail], social_name: params[:socialName], social_img_url: params[:socialImgUrl], advertising_id: params[:advertisingId], version_name: params[:versionName], version_code: params[:versionCode], utm_source: params[:utmSource], utm_term: params[:utmTerm], utm_medium: params[:utmMedium], utm_content: params[:utmContent], utm_campaign: params[:utmCampaign], referrer_url: params[:referalUrl], source_ip: source_ip, security_token: SecureRandom.uuid, refer_code: SecureRandom.hex(6).upcase)
                 { status: 200, message: MSG_SUCCESS, userId: user.id, securityToken: user.security_token }
               end
               user.update(device_id: params[:deviceId], device_type: params[:deviceType], device_name: params[:deviceName], social_type: params[:socialType], social_id: params[:socialId], social_email: params[:socialEmail], social_name: params[:socialName], social_img_url: params[:socialImgUrl], advertising_id: params[:advertisingId], version_name: params[:versionName], version_code: params[:versionCode], utm_source: params[:utmSource], utm_term: params[:utmTerm], utm_medium: params[:utmMedium], utm_content: params[:utmContent], utm_campaign: params[:utmCampaign], referrer_url: params[:referalUrl], source_ip: source_ip)
@@ -134,8 +133,8 @@ module API
             return { status: 500, message: INVALID_USER } unless user.present?
             source_ip = request.ip
             forceUpdate = false
-            user.app_opens.create(source_ip: source_ip, version_name: params[:versionName], version_code: params[:versionCode])
-            { status: 200, message: MSG_SUCCESS, forceUpdate: forceUpdate, packageName: "com.mobnews.app", customAds: custom_ads }
+            user.ft_app_opens.create(source_ip: source_ip, version_name: params[:versionName], version_code: params[:versionCode])
+            { status: 200, message: MSG_SUCCESS, forceUpdate: forceUpdate, packageName: "com.mobnews.app" }
           rescue Exception => e
             Rails.logger.info "API Exception-#{Time.now}-appOpen-#{params.inspect}-Error-#{e}"
             { status: 500, message: MSG_ERROR }
