@@ -1,0 +1,73 @@
+<div class="container-fluid py-4">
+  <% if notice %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <div class="header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Listing User Order Products For Order Id: <span class="text-danger"><%= @order_id %></span></h2>
+  </div>
+  <% if @cart_items.present? %>
+    <div class="table-responsive table-bordered">
+      <table class="table table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Order ID</th>
+            <th>Product Image</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>No Of Items From Order</th>
+            <th>In Stock</th>
+            <th>Ordered At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @cart_items.each do |cart_item| %>
+            <% product = @products.find { |p| p.id.to_s == cart_item.product_id.to_s } %>
+            <% if product %>
+              <tr class="clickable-row" data-href="/shopit/admin/products/<%= product.id %>" style="cursor:pointer;">
+                <td><%= cart_item.id %></td>
+                <td>
+                  <img src="<%= product.image_url || "https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png" %>" 
+                       alt="product avatar" 
+                       class="rounded-circle" 
+                       width="40" 
+                       height="40">
+                </td>
+                <td><%= product.name %></td>
+                <td><%= product.category.name if product.category %></td>
+                <td><%= cart_item.no_of_products %></td>
+                <td>
+                  <% if product.no_of_items.present? && product.no_of_items > 0 %>
+                    <span class="text-success">&#10004;</span>
+                  <% else %>
+                    <span class="text-danger">&#10008;</span>
+                  <% end %>
+                </td>
+                <td><%= cart_item.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+              </tr>
+            <% else %>
+              <tr>
+                <td colspan="7" class="text-danger">Product not found for Order ID <%= cart_item.id %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      No orders found.
+    </div>
+  <% end %>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+      row.addEventListener('click', function() {
+        window.location.href = row.getAttribute('data-href');
+      });
+    });
+  });
+</script>

@@ -1,0 +1,86 @@
+<div class="container-fluid py-4">
+  <% if notice %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <div class="header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Listing Products</h2>
+    <%= link_to "Add Product", new_shopit_admin_product_path, class: "btn btn-success" %>
+  </div>
+  <% if @products.present? %>
+    <div class="table-responsive table-bordered">
+      <table class="table table-hover ">
+        <thead class="table-light">
+          <tr>
+            <th>Id</th>
+            <th>Product Image</th>
+            <th>Product Name</th>
+            <th>Product Category</th>
+            <th>No Of Items</th>
+            <th>In Stock</th>
+            <th>Status</th>
+            <th>Date Time</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each do |product| %>
+            <tr class="clickable-row" data-href="/shopit/admin/shopit_products/<%= product.id %>" style="cursor:pointer;">
+              <td><%= product.id %></td>
+              <td>
+                <img src="<%= product.try(:image_url) %>" 
+                     alt="product avatar" 
+                     class="rounded-circle" 
+                     width="40" 
+                     height="40"
+                     onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';">
+              </td>
+              <td><%= product.name %></td>
+              <td><%= product.shopit_category.name %></td>
+              <td><%= product.no_of_items %></td>
+              <td>
+                <% if product.no_of_items.present? && product.no_of_items > 0 %>
+                  <span class="text-success">&#10004;</span>
+                <% else %>
+                  <span class="text-danger">&#10008;</span>
+                <% end %>
+              </td>
+              <td>
+                <% if product.status == true %>
+                  <span class="text-success">&#10004;</span>
+                <% else %>
+                  <span class="text-danger">&#10008;</span>
+                <% end %>
+              </td>
+              <td><%= product.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+              <td>
+                <div class="d-flex gap-2">
+                  <%= link_to "Edit", edit_shopit_admin_product_path(product), class: "btn btn-primary btn-sm" %>
+                  <%= button_to "Delete", shopit_admin_product_path(product), method: :delete, data: { confirm: "Are you sure you want to delete this product?" }, class: "btn btn-danger btn-sm" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <%= will_paginate @products, class: "page-item justify-content-center" %>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      No products Found
+    </div>
+  <% end %>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+      row.addEventListener('click', function() {
+        window.location.href = row.getAttribute('data-href');
+      });
+    });
+  });
+</script>

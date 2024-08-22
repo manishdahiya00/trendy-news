@@ -1,0 +1,69 @@
+<div class="container-fluid py-4">
+  <% if notice %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <div class="header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Listing Orders</h2>
+  </div>
+  <% if @checkouts.present? %>
+    <div class="table-responsive table-bordered">
+      <table class="table table-hover ">
+        <thead class="table-light">
+          <tr>
+            <th>Id</th>
+            <th>User</th>
+            <th>Order Id</th>
+            <th>Order Status</th>
+            <th>Date Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @checkouts.each do |checkout| %>
+            <tr>
+              <td><%= checkout.id %></td>
+              <td><a href="/shopit/admin/shopit_users/<%= checkout.shopit_user_id %>"><%= checkout.shopit_user.social_email %></a></td>
+              <td><a href="/shopit/admin/checkouts/<%= checkout.id %>"><%= checkout.order_id %></a></td>
+              <td>
+                <% if checkout.order_status == "placed" %>
+                  <span class="text-danger">PLACED</span>
+                <% elsif checkout.order_status == "processing" %>
+                  <span class="text-warning">PROCESSING</span>
+                <% elsif checkout.order_status == "shipped" %>
+                  <span class="text-primary">SHIPPED</span>
+                <% else %>
+                  <span class="text-success">COMPLETED</span>
+                <% end %>
+              </td>
+              <td><%= checkout.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+              <td>
+                <div class="d-flex gap-2">
+                  <%= link_to "Edit", edit_shopit_admin_checkout_path(checkout), class: "btn btn-primary btn-sm" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <%= will_paginate @checkouts, class: "page-item justify-content-center" %>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      No Orders Found
+    </div>
+  <% end %>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+      row.addEventListener('click', function() {
+        window.location.href = row.getAttribute('data-href');
+      });
+    });
+  });
+</script>
