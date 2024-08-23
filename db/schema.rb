@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_13_042856) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_23_125932) do
   create_table "app_banners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "image_url"
     t.string "action_url"
@@ -44,6 +44,80 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_13_042856) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["category_id"], name: "index_articles_on_category_id"
+  end
+
+  create_table "astrologies", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.text "description"
+    t.string "compatibility"
+    t.string "color"
+    t.string "lucky_number"
+    t.string "lucky_time"
+    t.string "date_range"
+    t.string "current_date"
+    t.string "mood"
+    t.integer "sign"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "astrology_app_banners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "title"
+    t.string "action_url"
+    t.string "img_url"
+    t.boolean "status", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "astrology_appopens", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "version_name"
+    t.string "version_code"
+    t.string "location"
+    t.string "source_ip"
+    t.bigint "astrology_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["astrology_user_id"], name: "index_astrology_appopens_on_astrology_user_id"
+  end
+
+  create_table "astrology_user_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "gender"
+    t.string "date_of_birth"
+    t.string "location"
+    t.bigint "astrology_user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["astrology_user_id"], name: "index_astrology_user_profiles_on_astrology_user_id"
+  end
+
+  create_table "astrology_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "social_id"
+    t.text "social_token"
+    t.string "social_type"
+    t.string "social_imgurl"
+    t.string "social_email"
+    t.string "social_name"
+    t.string "mobile_number"
+    t.string "device_id"
+    t.string "device_type"
+    t.string "device_name"
+    t.string "security_token"
+    t.string "advertising_id"
+    t.string "referral_code"
+    t.string "version_name"
+    t.string "version_code"
+    t.string "location"
+    t.string "source_ip"
+    t.text "fcm_token"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "utm_campaign"
+    t.string "utm_gclid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "carts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -217,6 +291,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_13_042856) do
   end
 
   add_foreign_key "articles", "categories"
+  add_foreign_key "astrology_appopens", "astrology_users"
+  add_foreign_key "astrology_user_profiles", "astrology_users"
   add_foreign_key "products", "shopit_categories"
   add_foreign_key "saveds", "articles"
   add_foreign_key "saveds", "users"
