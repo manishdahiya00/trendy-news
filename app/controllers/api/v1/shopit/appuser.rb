@@ -73,25 +73,16 @@ module API
             begin
               @account = valid_user(params[:userId], params[:securityToken])
               if @account
-                data = [
-                  {
-                    productId: Product.first.id,
-                    image: Product.first.image_url,
-                    name: Product.first.name,
-                  },
-                  {
-                    productId: Product.second.id,
-                    image: Product.second.image_url,
-                    name: Product.second.name,
-                  },
-                  {
-                    productId: Product.last.id,
-                    image: Product.last.image_url,
-                    name: Product.last.name,
-                  },
-                ]
+               products = Product.limit(3)
+  data = products.map do |product|
+    {
+      productId: product.id,
+      image: product.image_url,
+      name: product.name
+    }
+  end
 
-                { message: MSG_SUCCESS, status: 200, banners: data }
+  { message: MSG_SUCCESS, status: 200, banners: data || [] }
               else
                 { message: INVALID_USER, status: 500 }
               end
