@@ -1,0 +1,62 @@
+<div class="container-fluid py-4">
+  <% if notice %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <h2 class="mb-4">Listing Users</h2>
+  <% if @users.present? %>
+    <div class="table-responsive table-bordered">
+      <table class="table table-hover ">
+        <thead class="table-light">
+          <tr>
+            <th>Id</th>
+            <th>User Image</th>
+            <th>User Name</th>
+            <th>User Email</th>
+            <th>Source IP</th>
+            <th>Version Code/Name</th>
+            <th>Date Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr class="clickable-row" data-href="/shopit/admin/shopit_users/<%= user.id %>" style="cursor:pointer;">
+              <td><%= user.id %></td>
+              <td>
+                <img src="<%= user.try(:social_img_url) %>"
+                     alt="User avatar"
+                     class="rounded-circle"
+                     width="40"
+                     height="40"
+                     onerror="this.onerror=null;this.src='https://cdn.pixabay.com/photo/2014/03/24/17/21/wrong-295503_640.png';">
+              </td>
+              <td><%= user.social_name %></td>
+              <td><%= user.social_email %></td>
+              <td><%= user.source_ip %></td>
+              <td><%= user.version_code %> / <%= user.version_name %></td>
+              <td><%= user.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <%= will_paginate @users, class: "page-item justify-content-center" %>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      No Users Found
+    </div>
+  <% end %>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.clickable-row').forEach(function(row) {
+      row.addEventListener('click', function() {
+        window.location.href = row.getAttribute('data-href');
+      });
+    });
+  });
+</script>

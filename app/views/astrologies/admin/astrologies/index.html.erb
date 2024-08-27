@@ -1,0 +1,60 @@
+<div class="container-fluid py-4">
+  <% if notice %>
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% end %>
+  <div class="header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">Listing Astrologies</h2>
+  </div>
+  <% if @astrologies.present? %>
+    <div class="table-responsive table-bordered">
+      <table class="table table-hover ">
+        <thead class="table-light">
+          <tr>
+            <th>Id</th>
+            <th>Sign</th>
+            <th>Mood</th>
+            <th>Compatibility</th>
+            <th>Color</th>
+            <th>Lucky Number</th>
+            <th>Lucky Time</th>
+            <th>Date Range</th>
+            <th>Current Date</th>
+            <th>Date Time</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @astrologies.each do |astrology| %>
+            <tr>
+              <td><%= astrology.id %></td>
+              <td><%= astrology.sign %></td>
+              <td><%= astrology.mood %></td>
+              <td><%= astrology.compatibility %></td>
+              <td><%= astrology.color %></td>
+              <td><%= astrology.lucky_number %></td>
+              <td><%= astrology.lucky_time %></td>
+              <td><%= astrology.date_range %></td>
+              <td><%= astrology.current_date %></td>
+              <td><%= astrology.created_at.strftime("%d/%m/%y %I:%M %p") %></td>
+              <td>
+                <div class="d-flex gap-2">
+                  <%= button_to "Delete", astrologies_admin_astrology_path(astrology), method: :delete, data: { confirm: "Are you sure you want to delete this astrology?" }, class: "btn btn-danger btn-sm" %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <%= will_paginate @astrologies, class: "page-item justify-content-center" %>
+    </div>
+  <% else %>
+    <div class="alert alert-info" role="alert">
+      No astrologies Found
+    </div>
+  <% end %>
+</div>

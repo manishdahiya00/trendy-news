@@ -25,6 +25,17 @@ Rails.application.routes.draw do
       get "/shopit_category/:id/products" => "shopit_categories#products"
     end
   end
+  namespace :astrologies do
+    get "/admin" => "admin/login#new"
+    post "/admin" => "admin/login#login"
+    delete "/admin/logout" => "admin/login#logout"
+    get "/admin/dashboard" => "admin/dashboard#index"
+    namespace :admin do
+      resources :astrologies_users
+      resources :astrologies_app_banners
+      resources :astrologies
+    end
+  end
   mount API::Base => "/"
   mount API::V1::Shopit::Base => "/shopit"
 end
