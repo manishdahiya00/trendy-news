@@ -36,6 +36,9 @@ Rails.application.routes.draw do
       resources :astrologies
     end
   end
+  get "/acdelete" => "acdelete#new"
+  post "/acdelete" => "acdelete#create"
+
   mount API::Base => "/"
   mount API::V1::Shopit::Base => "/shopit"
 end

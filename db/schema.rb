@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_23_125932) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_28_073533) do
   create_table "app_banners", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "image_url"
     t.string "action_url"
@@ -148,6 +148,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_23_125932) do
     t.string "order_status", default: "ORDERED"
     t.string "order_id"
     t.integer "shopit_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "deleted_users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "from"
+    t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
