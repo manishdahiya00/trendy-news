@@ -1,3 +1,4 @@
 class DeletedUser < ApplicationRecord
-  belongs_to :user
+  validates :email, presence: true
+  validates :from, presence: true
 end
