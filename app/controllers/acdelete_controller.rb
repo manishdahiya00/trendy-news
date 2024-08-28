@@ -44,6 +44,8 @@ class AcdeleteController < ApplicationController
       User.find_by(social_email: email, user_from: "TrendyNews")
     when "fastag"
       FtAppUser.find_by(social_email: email)
+    when "shopit"
+      ShopitUser.find_by(social_email: email)
     else
       nil
     end
