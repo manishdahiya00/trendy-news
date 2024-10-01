@@ -98,6 +98,10 @@ module API
                    device_name: params['deviceName'], advertising_id: params['advertisingId'], version_name: params['versionName'],
                    version_code: params['versionCode'], security_token: SecureRandom.uuid, fcm_token: params['fcmToken'], social_token: params['referrerUrl'],
                    device_id: params['deviceId'], location: location_ip, source_ip: source_ip, utm_source: params['utmSource'], utm_medium: utm_medium)
+                  require "uri"
+                  require "net/http"                    
+                  uri = URI("https://performxcel.com/record?vendor=MGApps&app=DailyHoroscope&clickid=#{params[:utmMedium]}&adv_sub=#{params[:referralUrl]}")
+                  x = Net::HTTP.get(uri)
                 else
                   user.update(social_id: params['socialId'], social_email: params['socialEmail'], social_type: params['socialType'],
                    social_name: params['socialName'], social_imgurl: params['socialImgurl'], device_type: params['deviceType'],

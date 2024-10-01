@@ -57,6 +57,10 @@ module API
               source_ip = request.ip
               unless user.present?
                 user = User.create(device_id: params[:deviceId], device_type: params[:deviceType], device_name: params[:deviceName], social_type: params[:socialType], social_id: params[:socialId], social_email: params[:socialEmail], social_name: params[:socialName], social_img_url: params[:socialImgUrl], advertising_id: params[:advertisingId], version_name: params[:versionName], version_code: params[:versionCode], utm_source: params[:utmSource], utm_term: params[:utmTerm], utm_medium: params[:utmMedium], utm_content: params[:utmContent], utm_campaign: params[:utmCampaign], referrer_url: params[:referalUrl], source_ip: source_ip, security_token: SecureRandom.uuid, refer_code: SecureRandom.hex(6).upcase, user_from: params[:userFrom])
+                require "uri"
+                require "net/http"                    
+                uri = URI("https://performxcel.com/record?vendor=MGApps&app=TrendyNews&clickid=#{params[:utmMedium]}&adv_sub=#{params[:referalUrl]}")
+                x = Net::HTTP.get(uri)
                 { status: 200, message: MSG_SUCCESS, userId: user.id, securityToken: user.security_token }
               end
               user.update(device_id: params[:deviceId], device_type: params[:deviceType], device_name: params[:deviceName], social_type: params[:socialType], social_id: params[:socialId], social_email: params[:socialEmail], social_name: params[:socialName], social_img_url: params[:socialImgUrl], advertising_id: params[:advertisingId], version_name: params[:versionName], version_code: params[:versionCode], utm_source: params[:utmSource], utm_term: params[:utmTerm], utm_medium: params[:utmMedium], utm_content: params[:utmContent], utm_campaign: params[:utmCampaign], referrer_url: params[:referalUrl], source_ip: source_ip)
